@@ -16,6 +16,7 @@ func main() {
 	portFlag := flag.Int("port", 8087, "Riak port")
 	backupFlag := flag.Bool("backup", false, "Backup data")
 	restoreFlag := flag.Bool("restore", false, "Restore data")
+	numWorkers := flag.Int("workers", 1, "Num workers")
 
 	flag.Parse()
 
@@ -46,6 +47,6 @@ func main() {
 	}()
 
 	if *backupFlag {
-		backup.Start(c)
+		backup.Start(c, *numWorkers)
 	}
 }
