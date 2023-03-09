@@ -11,7 +11,7 @@ import (
 )
 
 func backupBucketProps(c *riak.Client, buckets *riak.ListBucketsResponse) {
-	bucketsProps, err := os.Create("bucketsProps.json")
+	bucketsProps, err := os.Create("data/bucketsProps.json")
 	if err != nil {
 		panic(err)
 	}

@@ -60,7 +60,7 @@ func GetKeyValue(c *riak.Client, bucketName string, key string) (*riak.FetchValu
 }
 
 func WriteToFile(key []*riak.Object, bucket string) {
-	fileName := bucket + ".json"
+	fileName := "data/keys/" + bucket + ".json"
 	file, err := os.OpenFile(fileName, os.O_APPEND|os.O_CREATE|os.O_WRONLY, 0644)
 	if err != nil {
 		panic(err)
