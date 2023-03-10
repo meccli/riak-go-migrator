@@ -8,7 +8,7 @@ import (
 	"riak-go-migrator/utils"
 )
 
-func backupBucketKeys(c *riak.Client, buckets *riak.ListBucketsResponse, numWorkers int) {
+func dropKeys(c *riak.Client, buckets *riak.ListBucketsResponse, numWorkers int) {
 	for _, bucket := range buckets.Buckets {
 		log.Printf("Processing bucket: %s\n", bucket)
 
@@ -24,12 +24,10 @@ func backupBucketKeys(c *riak.Client, buckets *riak.ListBucketsResponse, numWork
 				for key := range keyChan {
 					log.Printf("Processing key: %s\n", key)
 
-					value, err := utils.GetKeyValue(c, bucket, key)
+					err := utils.DropKey(c, bucket, key)
 					if err != nil {
 						panic(err)
 					}
-
-					utils.WriteToFile(value.Values, bucket)
 				}
 			}()
 		}

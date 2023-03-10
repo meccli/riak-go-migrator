@@ -17,10 +17,11 @@ func main() {
 	backupFlag := flag.Bool("backup", false, "Backup data")
 	restoreFlag := flag.Bool("restore", false, "Restore data")
 	numWorkers := flag.Int("workers", 1, "Num workers")
+	dropKeys := flag.Bool("drop", false, "Num workers")
 
 	flag.Parse()
 
-	if !*backupFlag && !*restoreFlag {
+	if !*backupFlag && !*restoreFlag && !*dropKeys {
 		flag.Usage()
 		os.Exit(1)
 	}
@@ -47,6 +48,10 @@ func main() {
 	}()
 
 	if *backupFlag {
+		backup.Start(c, *numWorkers)
+	}
+
+	if *dropKeys {
 		backup.Start(c, *numWorkers)
 	}
 }
