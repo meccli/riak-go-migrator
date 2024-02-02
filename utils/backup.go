@@ -8,7 +8,7 @@ import (
 )
 
 func GetAllBuckets(c *riak.Client) (*riak.ListBucketsResponse, error) {
-	bucketList := riak.NewListBucketsCommandBuilder()
+	bucketList := riak.NewListBucketsCommandBuilder().WithStreaming(true)
 	cmd, err := bucketList.Build()
 	if err != nil {
 		return nil, err
