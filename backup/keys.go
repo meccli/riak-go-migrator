@@ -8,7 +8,7 @@ import (
 	"riak-go-migrator/utils"
 )
 
-func backupBucketKeys(c *riak.Client, buckets *riak.ListBucketsResponse, numWorkers int) {
+func backupBucketKeys(c *riak.Cluster, buckets *riak.ListBucketsResponse, numWorkers int) {
 	for _, bucket := range buckets.Buckets {
 		log.Printf("Processing bucket: %s\n", bucket)
 

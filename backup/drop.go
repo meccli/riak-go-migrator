@@ -8,7 +8,7 @@ import (
 	"riak-go-migrator/utils"
 )
 
-func dropKeys(c *riak.Client, buckets *riak.ListBucketsResponse, numWorkers int) {
+func dropKeys(c *riak.Cluster, buckets *riak.ListBucketsResponse, numWorkers int) {
 	for _, bucket := range buckets.Buckets {
 		log.Printf("Processing bucket: %s\n", bucket)
 

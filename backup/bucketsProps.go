@@ -3,6 +3,7 @@ package backup
 import (
 	"encoding/json"
 	"fmt"
+	"log"
 	"os"
 
 	riak "github.com/basho/riak-go-client"
@@ -10,7 +11,9 @@ import (
 	"riak-go-migrator/utils"
 )
 
-func backupBucketProps(c *riak.Client, buckets *riak.ListBucketsResponse) {
+func backupBucketProps(c *riak.Cluster, buckets *riak.ListBucketsResponse) {
+	log.Printf("Got %d buckets", len(buckets.Buckets))
+	log.Println("Processing of buckets...")
 	bucketsProps, err := os.Create("bucketsProps.json")
 	if err != nil {
 		panic(err)
@@ -37,4 +40,5 @@ func backupBucketProps(c *riak.Client, buckets *riak.ListBucketsResponse) {
 		panic(err)
 	}
 	fmt.Fprintln(bucketsProps, string(b))
+	log.Println("Processing of buckets completed.")
 }

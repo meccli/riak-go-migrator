@@ -2,26 +2,37 @@ package utils
 
 import (
 	"encoding/json"
+	"log"
 	"os"
+	"time"
 
 	riak "github.com/basho/riak-go-client"
 )
 
-func GetAllBuckets(c *riak.Client) (*riak.ListBucketsResponse, error) {
-	bucketList := riak.NewListBucketsCommandBuilder().WithStreaming(true)
+func GetAllBuckets(c *riak.Cluster) (*riak.ListBucketsResponse, error) {
+	log.Println("getting bucket list...")
+	bucketList := riak.NewListBucketsCommandBuilder().
+		WithTimeout(time.Second * 20000).
+		WithStreaming(false)
+
 	cmd, err := bucketList.Build()
 	if err != nil {
 		return nil, err
 	}
+
 	if err := c.Execute(cmd); err != nil {
 		return nil, err
 	}
+
 	buckets := cmd.(*riak.ListBucketsCommand).Response
 	return buckets, nil
 }
 
-func GetBucketProp(c *riak.Client, bucketName string) (*riak.FetchBucketPropsResponse, error) {
+func GetBucketProp(c *riak.Cluster, bucketName string) (*riak.FetchBucketPropsResponse, error) {
+	// log.Printf("getting bucket props for %s", bucketName)
+
 	bucketProps := riak.NewFetchBucketPropsCommandBuilder().WithBucket(bucketName)
+
 	cmd, err := bucketProps.Build()
 	if err != nil {
 		return nil, err
@@ -33,7 +44,7 @@ func GetBucketProp(c *riak.Client, bucketName string) (*riak.FetchBucketPropsRes
 	return propert, nil
 }
 
-func GetBucketKeys(c *riak.Client, bucketName string) (*riak.ListKeysResponse, error) {
+func GetBucketKeys(c *riak.Cluster, bucketName string) (*riak.ListKeysResponse, error) {
 	keyList := riak.NewListKeysCommandBuilder().WithBucket(bucketName)
 	cmd, err := keyList.Build()
 	if err != nil {
@@ -46,7 +57,7 @@ func GetBucketKeys(c *riak.Client, bucketName string) (*riak.ListKeysResponse, e
 	return keys, nil
 }
 
-func GetKeyValue(c *riak.Client, bucketName string, key string) (*riak.FetchValueResponse, error) {
+func GetKeyValue(c *riak.Cluster, bucketName string, key string) (*riak.FetchValueResponse, error) {
 	keyValue := riak.NewFetchValueCommandBuilder().WithBucket(bucketName).WithKey(key)
 	cmd, err := keyValue.Build()
 	if err != nil {

@@ -6,7 +6,7 @@ import (
 	riak "github.com/basho/riak-go-client"
 )
 
-func Start(c *riak.Client, bucketsOnly bool, numWorkers int) {
+func Start(c *riak.Cluster, bucketsOnly bool, numWorkers int) {
 	buckets, err := utils.GetAllBuckets(c)
 	if err != nil {
 		panic(err)
