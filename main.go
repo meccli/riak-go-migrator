@@ -15,6 +15,7 @@ func main() {
 	hostFlag := flag.String("host", "127.0.0.1", "Riak host")
 	portFlag := flag.Int("port", 8087, "Riak port")
 	backupFlag := flag.Bool("backup", false, "Backup data")
+	backupBucketOnly := flag.Bool("bucketonly", false, "Backup only buckets list")
 	restoreFlag := flag.Bool("restore", false, "Restore data")
 	numWorkers := flag.Int("workers", 1, "Num workers")
 	dropKeys := flag.Bool("drop", false, "Num workers")
@@ -48,10 +49,10 @@ func main() {
 	}()
 
 	if *backupFlag {
-		backup.Start(c, *numWorkers)
+		backup.Start(c, *backupBucketOnly, *numWorkers)
 	}
 
 	if *dropKeys {
-		backup.Start(c, *numWorkers)
+		backup.Start(c, *backupBucketOnly, *numWorkers)
 	}
 }
